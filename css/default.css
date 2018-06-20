@@ -1,0 +1,76 @@
+.top_box{
+    width:100%;
+    background-color:#f0f6fd;
+    border:1px solid #dcdcdc;
+}
+.top_box dl{
+    overflow: hidden;
+}
+.top_box dl dt{
+    font-weight: bold;
+    color: #4a4a4a;
+    font-size: 12px;
+    float: left;
+    line-height: 54px;
+    margin-left: 20px;
+}
+.top_box dl dd{
+    float: left;
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-left: -1px;
+}
+.searchBtn{
+    background: #1088e3;
+    height: 24px;
+    padding: 0 11px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    border-radius: 0px;
+}
+.fileBox{
+    margin-top:12px;
+}
+.fileName {
+    margin: -2px 0 0 0;
+    height: 23px;
+    width: 170px;
+    border: 1px solid #dcdcdc;
+    overflow: auto;
+    background: #fff;
+    margin-left: 16px;
+}
+.fileBox .btn_file {
+    display: inline-block;
+    padding: 0.2em 0.7em;
+    color: #000;
+    margin-top: -2px;
+    font-size: 13px;
+    line-height: narrow;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+}
+
+.fileBox input[type="file"] {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    border:0
+}
+
+.k-link{
+    font-size:12px;
+    text-align:center;
+}
+.k-grid-content table td{
+    font-size:13px;
+    text-align:center;
+}

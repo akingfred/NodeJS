@@ -1,0 +1,154 @@
+	.main_chart{
+		height:800px;
+		width: 1200px;
+
+	}
+	.line_area {
+		height:400px;
+		margin:0;
+		padding:0;
+	}
+
+	.line_area li {
+		width:100%;
+		height:30px;
+		line-height:30px;
+		list-style: none;
+		float: left;  
+		vertical-align: middle; 
+		text-align: center;
+	}
+
+	.line_area li span {
+		width: 100px;
+		position: absolute;
+		left: 0;
+		background: #fff;
+	}
+
+	.line_area li div {
+		width: 100%;
+		border-bottom: 1px solid #cfd0ca;
+		margin-top: 14px;
+		position: inherit;
+		right: 0;
+	}
+
+	.chart_area {
+		height: auto;
+		width: inherit;
+		position: absolute;
+		top: 0px;
+		list-style-position: inside;
+		padding-left: 0;
+	}
+
+	.chart_area li {
+		width:3%;
+		height:100%;
+		line-height:100%;
+		list-style: none;
+		float: left;  
+		vertical-align: middle; 
+		text-align: center;
+	}
+
+	.chart_area li:first-child {
+		width:100px;
+	}
+
+	.chart_area li div.chart_bar {
+		height: 298px;
+		position: relative;
+		width: 40%;
+		margin: 0 auto;
+		z-index: 1;
+		margin-top: 9px;
+	}
+
+
+	.chart_area li div.chart_bar .bar {
+		position: absolute;
+		display: inline-block;
+		bottom: 0px;
+		border: 1px solid #9c5829;
+		background: #cd5a0a;
+		width: 100%;
+		text-align: center;
+		color: white;
+		left:0;
+	}
+
+	.chart_area li div.chart_bar span {
+		text-align: center;
+		color: #d15c16;
+		position: absolute;
+		top: -38px;
+		width: 100%;
+		left: -2px;
+		font-size: smaller;
+		font-weight: bold;
+	}
+
+	.chart_area li span {
+		margin-top: 18px;
+		display: block;
+	}
+
+	.chart_area li .chart_img {
+		position: relative;
+		margin: 0 auto;
+		padding-top: 10px;
+	}
+
+	.chart_area li .chart_img.line1 {
+		height: 100px;
+	}
+
+	.chart_area li .chart_img.line2 {
+		height: 200px;
+	}
+
+	.chart_area li .chart_img.line0 {
+		height: 300px;
+	}
+
+	.chart_area li .chart_img .line_horizontal {
+		width: 50%;
+		height: 90%;
+		border-right: 1px solid #cfd0ca;
+	}
+
+	.chart_area li img {
+		position: absolute;
+		bottom: 5px;
+		width: 100%;
+		height: 53px;
+		left: 0;
+	}
+
+	.chart_area li .chart_img span {
+		position: absolute;
+		bottom: -40px;
+		left: 0;
+		background: #fff;
+		z-index: 1;
+		font-size:12px;
+		display: inline-block;
+		width: 70px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: normal;
+		background: #fff;
+		line-height: 1.2em;
+		/* max-height: 2.4em; */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 3; /* �씪�씤�닔 */
+		-webkit-box-orient: vertical;
+		word-wrap:break-word;
+		line-height: 1.2em;
+		height: 3.6em;
+		margin-left: -16px;
+	}

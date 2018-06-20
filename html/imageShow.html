@@ -1,0 +1,147 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/kendo.common.min.css" />
+    <link rel="stylesheet" href="css/kendo.default.min.css" />
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="css/kendo.silver.min.css" />
+
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/kendo.all.min.js"></script>
+</head>
+<style type="text/css">
+    .top_box dl dt{
+        margin-right:10px;
+    }
+    .img_box{
+        border: 1px solid #515967;
+        width: 400px;
+        height: 400px;
+        float: left;
+        margin: 25px;
+    }
+    .img_contents{
+        width: 100%;
+        height: 300px;
+    }
+    .img_contents img{
+        width:100%;
+        height:100%;
+    }
+    .img_description{
+        width: 370px;
+        height: 100px;
+        background-color: white;
+    }
+    span{
+        width:180px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        font-weight: bold;
+        /*color: #a08d8d;*/
+        font-size: 11px;
+        float: left;
+        line-height: 30px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .top_box dl .alert_msg span{
+        font-size:11px;
+        color:red;
+        line-height: 23px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+        fn_searchBtn();
+    });
+    function fn_searchBtn(){
+        var data ={
+            "cdItem" : $('#cdItem').val(),
+            "nmItem" : $('#nmItem').val()
+        }
+        $.ajax({
+            type:"POST",
+            data : data,
+            dataType:"json",
+            url:"/selectImage",
+            success:function(result){
+                $('.image').empty();
+                if(result.list.length < 1){
+                    $('.top_box dl').append(
+                            "<dd class='alert_msg'>"+
+                                "<span>※데이터가 없습니다.</span>"+
+                            "</dd>"
+                        );
+                }
+                $.each(result.list,function(index,item){
+                    if(item.FILENAME == ''){
+                        $('.image').append(
+                            "<div class='img_box'>"+
+                                "<div class='img_contents'>"+
+                                    "<img src='images/no_image.png' />" +
+                                "</div>"+
+                                "<div class='img_description'>"+
+                                    "<table>"+
+                                        "<tr>"+
+                                            "<td><span class='nmItem'>품목명 : "+item.NM_ITEM+"</span></td>"+
+                                        "</tr>"+
+                                        "<tr>"+
+                                            "<td><span class='cdItem'>품목코드 : "+item.CD_ITEM+"</span></td>"+
+                                        "</tr>"+
+                                    "</table>"+
+                                "</div>"+
+                            "</div>"
+                        );
+                    }else{
+                        $('.image').append(
+                            "<div class='img_box'>"+
+                                "<div class='img_contents'>"+
+                                    "<img src='upload/"+item.FILENAME+"' />" +
+                                "</div>"+
+                                "<div class='img_description'>"+
+                                    "<table>"+
+                                        "<tr>"+
+                                            "<td><span class='nmItem'>품목명 : "+item.NM_ITEM+"</span></td>"+
+                                        "</tr>"+
+                                        "<tr>"+
+                                            "<td><span class='cdItem'>품목코드 : "+item.CD_ITEM+"</span></td>"+
+                                        "</tr>"+
+                                    "</table>"+
+                                "</div>"+
+                            "</div>"
+                        );
+                    }
+                    
+                })
+            }
+        });
+    }
+</script>
+<body>
+
+    <div class="top_box">
+        <dl>
+            <dt>제품코드 : </dt>
+            <dd>
+                <input type="text" id="cdItem" name="cdItem" value="" />
+            </dd>
+            <dt>제품명 : </dt>
+            <dd>
+                <input type="text" id="nmItem" name="nmItem" value="" />
+            </dd>
+            <dd>
+                <input type="button" class="searchBtn" id="" onclick="fn_searchBtn();" value="검색" />
+            </dd>
+        </dl>
+    </div>
+
+    <div class="image">
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="Generator" content="EditPlus®">
+<meta name="Author" content="">
+<meta name="Keywords" content="">
+<meta name="Description" content="">
+<title>Document</title>
+<link rel="stylesheet" href="css/chart.css" />
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+</head>
+<script type="text/javascript">
+	$(function(){
+		var maximum = 5000;
+		$.ajax({
+			url:'/salesChart',
+			dataType:'json',
+			async:false,
+			type:'POST',
+			success:function(result){
+				if(result.totalCount < 1){
+					alert('차트를 구성할 데이터가 부족합니다.');
+					location.href="/salesData";
+				}
+
+				var count = 1;
+				$.each(result.list,function(index,item){
+					if(index < 1){
+						maximum = item.SALE_NUM;
+						for(var i = 10; i >= 0; i--){
+							$('.line_area').append(
+								"<li>"+
+									"<span>"+Math.floor(maximum*i/10)+"</span>"+
+									"<div></div>"+
+								"</li>" 
+							);
+						}
+					}
+					console.log("CD_ITEM : " + item.CD_ITEM);
+					console.log("SALE_NUM : " + item.SALE_NUM);
+					console.log("SALE_AMT : " + item.SALE_AMT);
+					console.log("FILENAME : " + item.FILENAME);
+					console.log("maximum : "+ maximum);
+					if(count >= 3){
+						count = 0;
+					}
+					$('.chart_area').append(
+						"<li>"+
+							"<div class='chart_bar'>"+
+								"<div class='bar' style='height:"+Math.floor((Number(item.SALE_NUM)/maximum)*100)+"%'><span>"+item.SALE_NUM+"</span></div>"+
+							"</div>"+
+							"<span>"+(index+1)+"</span>"+
+							"<div class='chart_img line"+count+"'>"+
+								"<div class='line_horizontal'></div>"+
+								"<img src='upload/"+item.FILENAME+"'>"+
+								"<span>"+item.CD_ITEM+"</span>"+
+							"</div>"+
+						"</li>"
+					);
+					count = count + 1;
+				});
+				
+			}
+		});
+		
+		
+		
+		
+	});
+	
+</script>
+<body>
+	<div class="main_chart">
+		<ul class="line_area"> 
+		</ul>
+		<ul class="chart_area"> 
+			<li>
+				<div class="chart_bar"></div>
+				<span>순위</span>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        
+        <link rel="stylesheet" href="css/kendo.common.min.css" />
+        <link rel="stylesheet" href="css/kendo.default.min.css" />
+        <link rel="stylesheet" href="css/default.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/contents.css" />
+        <link rel="stylesheet" type="text/css" href="css/kendo.silver.min.css" />
+
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/kendo.all.min.js"></script>
+        <script type="text/javascript" src="js/jquery.form.js"></script>
+        
+    </head>
+    <style type="text/css">
+        #grid{
+            height: 436px;
+            margin-top: 20px !important;
+            box-shadow: none;
+            color: #515967;
+        }
+        .necessary{
+            color:red;
+        }
+        .pop_con .top_box dt{
+            width:70px;
+            text-align:right;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            mainGrid();
+
+            var window = $("#popUp");
+            
+            $("#popUp_cancle").click(function(){
+                window.data("kendoWindow").close();
+            });
+
+            function onClose() {
+
+            }
+
+            window.kendoWindow({
+                width: "600px",
+                height: "600px",
+                visible: false,
+                close: onClose
+            }).data("kendoWindow").center();
+
+            //찾아보기 버튼 이벤트
+            var uploadFile = $('.fileBox .imageFile');
+            uploadFile.on('change', function(){
+		 	if(window.FileReader){
+		 		var filename = $(this)[0].files[0].name;
+		 	} else {
+		 		var filename = $(this).val().split('/').pop().split('\\').pop();
+		 	}
+		 	$(this).siblings('.fileName').val(filename);
+		 });
+
+        });
+        function fn_popUp(){
+            var window = $("#popUp");
+            window.data("kendoWindow").open();
+	    }
+        function fn_searchBtn(){
+            gridReload();
+        }
+        function fn_save(){
+            var cdItem = $('#popup_cdItem').val();
+            var nmItem = $('#popup_nmItem').val();
+            var cdCompany = $('#popup_cdCompany').val();
+            var etc = $('#popup_etc').val();
+            if(cdItem == '' || nmItem == '' || cdCompany == ''){
+                alert('필수사항을 입력하셔야 합니다.');
+                return;
+            }
+            
+            var file = $("#imageFile").val();
+            if (file == "" || file == null) {
+                alert("파일을 선택해주세요.");
+                return false;
+            } else if (!checkFileType(file)) {
+                alert("JPG 또는 PNG 파일만 업로드 가능합니다.");
+                return false;
+            }
+
+            $('#itemForm').ajaxForm({
+                success: function(data){
+                    alert('품목이 등록되었습니다');
+                    location.reload();
+                }
+            });
+            $('#itemForm').submit();
+        }
+        function checkFileType(filePath) {
+            var fileFormat = filePath.split(".");
+            if (fileFormat.indexOf("jpg") > -1 || fileFormat.indexOf("png") > -1 || fileFormat.indexOf("JPG") > -1  || fileFormat.indexOf("PNG") > -1) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+    </script>
+    <body>
+        <div class="top_box">
+            <dl>
+                <dt>제품코드 :</dt>
+                <dd>
+                    <input type="text" id="cdItem" name="" value="" />
+                </dd>
+                <dt>제품명 :</dt>
+                <dd>
+                    <input type="text" id="nmItem" name="" value="" />
+                </dd>
+                <dd>
+                    <input type="button" class="searchBtn" id="" onclick="fn_searchBtn();" value="검색" />
+                </dd>
+                <dd>
+                    <input type="button" class="searchBtn" id="" onclick="fn_popUp();" value="제품등록" />
+                </dd>
+            </dl>
+        </div>
+        <div id="example">
+            <div id="grid"></div>
+        </div>
+        
+
+        <!-- 팝업 -->
+        <div class="pop_wrap_dir" id="popUp" style="width:550px;">
+            <div class="pop_head">
+                <h1>제품 등록</h1>
+            </div>
+            <div class="pop_con">
+                <form action="/itemReg" method="POST" id="itemForm" enctype="multipart/form-data" >
+                    <div class="top_box">
+                        <dl>
+                            <dt ><span class="necessary">*</span>회사코드 :</dt>
+                            <dd><input type="text" id="popup_cdCompany" name="cdCompany" value=""></dd>
+                        </dl>
+                        <dl>
+                            <dt><span class="necessary">*</span>제품명 :</dt>
+                            <dd><input type="text" id="popup_nmItem" name="nmItem" value=""></dd>
+                        </dl>
+                        <dl>
+                            <dt><span class="necessary">*</span>제품코드 :</dt>
+                            <dd><input type="text" id="popup_cdItem" name="cdItem" value=""></dd>
+                        </dl>
+                        <dl>
+                            <dt>비고 :</dt>
+                            <dd><input type="text" id="popup_etc" name="etc" value=""></dd>
+                        </dl>
+                        <dl>
+                            <dt style="margin-right:-10px">이미지첨부 :</dt>
+                            <div class="fileBox">
+                                <input type="file" id="imageFile" name="imageFile" class="imageFile">
+                                <input type="text" class="fileName" readonly="readonly">
+                                <label for="imageFile" class="btn_file">첨부하기</label>
+                            </div>
+                        </dl>
+                        <dl style="margin-left:45%">
+                            <dd><input type="button" id="save" onclick="fn_save();" value="등록"/></dd>
+                        </dl>
+                    </div>
+                </form>
+            </div><!-- //pop_con -->
+
+            <div class="pop_foot">
+                <div class="btn_cen pt12">
+                    <input type="button" class="gray_btn" id="popUp_cancle" value="닫기" />
+                </div>
+            </div><!-- //pop_foot -->
+        </div><!-- //pop_wrap -->
+
+        <script type="text/javascript" src="js/show/mainGrid.js"></script>
+    </body>
+</html>

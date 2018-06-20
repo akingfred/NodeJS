@@ -1,0 +1,153 @@
+<!DOCTYPE>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        
+        <link rel="stylesheet" href="css/kendo.common.min.css" />
+        <link rel="stylesheet" href="css/kendo.default.min.css" />
+        <link rel="stylesheet" href="css/default.css" />
+        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/contents.css" />
+        <link rel="stylesheet" type="text/css" href="css/kendo.silver.min.css" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.7.3/themes/blitzer/jquery-ui.css">
+
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/kendo.all.min.js"></script>
+        <script type="text/javascript" src="js/jquery.form.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+    </head>
+    <style type="text/css">
+        #grid{
+            height: 436px;
+            margin-top: 20px !important;
+            box-shadow: none;
+            color: #515967;
+        }
+        #popup_cdItem{
+            margin-left: -12px;
+        }
+        .fileBox{
+            margin-top: 0px;
+        }
+        #upload, #download{
+            margin-top:1px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            mainGrid();
+            
+            //찾아보기 버튼 이벤트
+            var uploadFile = $('.fileBox .imageFile');
+            uploadFile.on('change', function(){
+                if(window.FileReader){
+                    var filename = $(this)[0].files[0].name;
+                } else {
+                    var filename = $(this).val().split('/').pop().split('\\').pop();
+                }
+                $(this).siblings('.fileName').val(filename);
+            });
+            
+            //DatePicker
+            $('#startDate').datepicker({ 
+                dateFormat: 'yy-mm-dd' ,
+                monthNames: [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토']
+            });
+            $('#endDate').datepicker({
+                dateFormat: 'yy-mm-dd' ,
+                monthNames: [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월' ],
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토']
+            });
+        });
+        function fn_excelUpload(){
+            var file = $("#excelFile").val();
+            if (file == "" || file == null) {
+                alert("파일을 선택해주세요.");
+                return false;
+            } else if (!checkFileType(file)) {
+                alert("엑셀 파일만 업로드 가능합니다.");
+                return false;
+            }
+
+            if (confirm("업로드 하시겠습니까?")) {
+                $("#excelUploadForm").ajaxForm({
+                    url: "/excelUpload",
+                    dataType:'text',
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(result){
+                        
+                        if(result=="Y"){
+                            alert("정상적으로 업로드가 완료되었습니다.");
+                            $("#excelFile").val("");
+                            $(".fileName").val("");
+                            gridReload();
+                        }else if(result=="N"){
+                            alert("입력하지 않은 데이터가 있는지 확인해주세요");
+                            return;
+                        }else{
+                            alert(result);
+                            return;
+                        }
+                    }
+                }).submit();
+            }
+        }
+        function fn_download(){
+            location.href="/download";
+        }
+        function checkFileType(filePath) {
+            var fileFormat = filePath.split(".");
+            if (fileFormat.indexOf("xlsx") > -1) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+        function fn_searchBtn(){
+            gridReload();
+        }
+        function fn_showChart(){
+            location.href="/showChart";
+        }
+    </script>
+    <body>
+        <div class="top_box">
+            <dl>
+                <dd>
+                    <form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data" method="post" >
+                        <div class="fileBox">
+                            <input type="file" id="excelFile" name="excelFile" class="imageFile">
+                            <input type="text" class="fileName" readonly="readonly">
+                            <label for="excelFile" class="btn_file">첨부하기</label>
+                        </div>
+                    </form>
+                </dd>
+                <dd><input type="button" class="searchBtn" id="upload" onclick="fn_excelUpload();" value="업로드" /></dd>
+                <dd><input type="button" class="searchBtn" id="download" onclick="fn_download();" value="양식다운로드" /></dd>
+                <dt  class="ar" >※정해진 양식에 입력 후 업로드 해주세요</dt>
+            </dl>
+            <dl style="margin-top: -20px;">
+                <dt  class="ar">날짜 :</dt>
+                <dd>
+                    <input type="text" style="width:90px;" value="" name="startDate" id="startDate" placeholder="시작일" readonly/>
+                </dd>
+                <dt style="width:8px;margin-left:4px;">~</dt>
+                <dd>
+                    <input type="text" style="width:90px;" value="" name="endDate" id="endDate" placeholder="마지막일" readonly/>
+                </dd>
+                <dd><input type="button" class="searchBtn" id="searchBtn" onclick="fn_searchBtn();" value="검색" /></dd>
+                <dd><input type="button" class="searchBtn" id="searchBtn" onclick="fn_showChart();" value="차트보기" style="background-color:#e78e47;"  /></dd>
+            </dl>
+        </div>
+        <div id="example">
+            <div id="grid"></div>
+        </div>
+        <script type="text/javascript" src="js/salesData/mainGrid.js"></script>
+    </body>
+</html>
